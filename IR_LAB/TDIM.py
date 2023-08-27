@@ -1,4 +1,3 @@
-
 name = input("Enter the name of the document: ")
 n = int(input("Enter the number of documents you want: "))
 docs = []
@@ -43,49 +42,64 @@ for i in range(n1):
     word = input(f"Enter word_{i+1}: ")
     words.append(word)
     
-operators = input("Enter the operators(in capitals) (AND / OR / NOT): ").split()
+oper = input("Enter the operators(in capitals) (AND / OR / NOT): ").split()
 
-operators_stack = []
-results_stack = []
+query = input("Enter the query: ")
 
+
+tokens = query.split()
+
+
+oper_stk = []
+res_stk = []
+
+def fitting(oper):
+    if oper == 'NOT':
+        v = res_stk.pop()
+        res_stk.append(logical_not(v))
+    else:
+        v2 = res_stk.pop()
+        v1 = res_stk.pop()
+        if oper == 'AND':
+            res_stk.append(logical_and(v1, v2))
+        elif oper == 'OR':
+            res_stk.append(logical_or(v1, v2))
+
+
+# Process tokens
 try:
-    for token in words + operators:
-        if token in precedence:
-            while (operators_stack and operators_stack[-1] in precedence and
-                   precedence[operators_stack[-1]] >= precedence[token]):
-                operator = operators_stack.pop()
-                if operator == 'NOT':
-                    v = results_stack.pop()
-                    results_stack.append(logical_not(v))
-                else:
-                    v2 = results_stack.pop()
-                    v1 = results_stack.pop()
-                    if operator == 'AND':
-                        results_stack.append(logical_and(v1, v2))
-                    elif operator == 'OR':
-                        results_stack.append(logical_or(v1, v2))
-            operators_stack.append(token)
+    for token in tokens:
+        if token == '(':
+            oper_stk.append(token)
+            
+        elif token == ')':
+            while oper_stk and oper_stk[-1] != '(':
+                oper = oper_stk.pop()
+                fitting(oper)
+            oper_stk.pop()
+            
+        elif token in precedence:
+            while (oper_stk and oper_stk[-1] in precedence and
+                   precedence[oper_stk[-1]] >= precedence[token]):
+                oper = oper_stk.pop()
+                fitting(oper)
+            oper_stk.append(token)
+            
         else:
             v = matrix.get(token, [0] * n)
-            results_stack.append(v)
+            res_stk.append(v)
+            
 except IndexError:
     print("Error: Incorrect expression or operator precedence.")
 
-while operators_stack:
-    operator = operators_stack.pop()
-    if operator == 'NOT':
-        v = results_stack.pop()
-        results_stack.append(logical_not(v))
-    else:
-        v2 = results_stack.pop()
-        v1 = results_stack.pop()
-        if operator == 'AND':
-            results_stack.append(logical_and(v1, v2))
-        elif operator == 'OR':
-            results_stack.append(logical_or(v1, v2))
 
-if results_stack:
-    print("Final Result:", results_stack[0])
+while oper_stk:
+    oper = oper_stk.pop()
+    fitting(oper)
+
+
+if res_stk:
+    print("Final Result:", res_stk[0])
 else:
     print("No result available.")
 
