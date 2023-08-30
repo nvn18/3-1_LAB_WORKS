@@ -1,22 +1,35 @@
 #single query evalution:
 
 inverted_index = {}
+word_counts = {}  # To store the count of each word
 
 # Input documents
+name = input("Enter the name of doc: ")
 n = int(input("Enter the number of documents you want: "))
 for i in range(n):
-    doc_id = f"doc{i+1}"
-    doc_content = input(f"Enter content for {doc_id}: ")
-    terms = doc_content.lower().split()  
-    for term in terms:
-        if term not in inverted_index:
-            inverted_index[term] = set()
-        inverted_index[term].add(doc_id)
+    doc_num = f"{name}{i+1}"
+    doc_matter = input(f"Enter content for {doc_num}: ")
+    terms = doc_matter.lower().split()
+    
+    for t in terms:
+        if t in word_counts:
+            word_counts[t] += 1
+        else:
+            word_counts[t] = 1
+        
+        if t not in inverted_index:
+            inverted_index[t] = set()
+        inverted_index[t].add(doc_num)  
 
-# Print the inverted index
+# Print the word counts
+print("Word Counts:")
+for term, count in word_counts.items():
+    print(f"{term}: {count}")
+
+print("---------------------------")
 print("Inverted Index:")
-for term, doc_ids in inverted_index.items():
-    print(f"{term}: {doc_ids}")
+for term, doc_nums in inverted_index.items():
+    print(f"{term}: {doc_nums}")
 
 
 
