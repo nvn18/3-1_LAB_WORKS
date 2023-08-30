@@ -18,28 +18,23 @@ for term, doc_nums in inverted_index.items():
     print(f"{term}: {doc_nums}")
 
 while True:
-    query = input("Enter the query(to exit type 'na valla kaadu'): ")
-
-    if query == 'na valla kaadu':
-        print("Exiting the program.")
+    query = input("Enter the query:\n")
+    if query =="na valla kaadu":
+        print("exiting program")
         break
-
-    query_parts = query.split()
-
-    if len(query_parts) != 3:
-        print("Invalid query format.")
     else:
+        query_parts = query.split()
         word1 = query_parts[0]
         oper = query_parts[1]
         word2 = query_parts[2]
 
-        # Initialize the result set with document IDs containing the first word
+
         if word1 in inverted_index:
             result = inverted_index[word1].copy()
         else:
             result = set()
 
-        # Apply the operator to the result set and document IDs of the second word
+
         if word2 in inverted_index:
             if oper == "AND":
                 result.intersection_update(inverted_index[word2])
@@ -47,19 +42,16 @@ while True:
                 result.update(inverted_index[word2])
             elif oper == "NOT":
                 result.difference_update(inverted_index[word2])
-            else:
-                print("Invalid operator.")
-        else:
-            result = set()
 
         # Display the resulting documents in a single line
         if result:
             print("Documents satisfying the query:", end=" ")
             for doc_id in result:
-                print(doc_id, "-->", end=" ")
-            print()
+                print(doc_id,"-->",end=" ")
         else:
-            print("No documents satisfy the query.")
+            print("no match found")
+
+                #print("the program executed successfully")
 
 #"breakthrough drug for schizophrenia"
 #"new schizophrenia drug"
