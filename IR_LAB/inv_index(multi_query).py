@@ -18,7 +18,7 @@ for term, doc_nums in inverted_index.items():
     print(f"{term}: {doc_nums}")
 
 while True:
-    query = input("Enter the query:\n")
+    query = input("Enter the query (to exit enter 'na valla kaadu'):\n")
     if query =="na valla kaadu":
         print("exiting program")
         break
