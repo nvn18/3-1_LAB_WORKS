@@ -52,8 +52,8 @@ while True:
             print("no match found")
 
                 #print("the program executed successfully")
-
-#"breakthrough drug for schizophrenia"
-#"new schizophrenia drug"
-#"new approach for treatment of schizophrenia"
-#"new hopes for schizophrenia patients"
+            
+#breakthrough drug for schizophrenia
+#new schizophrenia drug
+#new approach for treatment of schizophrenia
+#new hopes for schizophrenia patients
